@@ -1,0 +1,195 @@
+# Importing modules.
+import tkinter as tk
+
+
+# Function to add tasks.
+def add_task(self, task):
+    self.tasks.append(task)
+
+
+# Using tkinter to output my code in order for it to look like an actual platform.
+window = tk.Tk()
+window.title("To-Do List Manager")
+title_label = tk.Label(window, text="To-Do List")
+title_label.pack()
+listbox = tk.Listbox(window)
+listbox.pack()
+entry = tk.Entry(window)
+entry.pack()
+# Adding buttons to the platform.
+add_button = tk.Button(window, text="Add Task", command=add_task)
+add_button.pack()
+
+# Printing a string to the user so they know what this project is about.
+print(".....WELCOME TO THE TO-DO LIST MANAGER.....")
+
+
+# A Task function to assign description, due_date, and priority to a name (same name).
+class Task:
+    def __init__(self, description, due_date, priority):
+        self.description = description
+        self.due_date = due_date
+        self.priority = priority
+
+
+class ToDoList:
+    # Created a user interface where the display_menu method is added to the ToDoList class.
+    # This method prints a menu with options for different actions. The run method is also added, which displays the menu and handles the user's choice by using an infinite loop.
+    # Inside the loop the user's input is checked against the available options and the corresponding action is executed.
+    def display_menu(self):
+        print("------- TO-DO LIST MANAGER -------")
+        print("1. Add a task")
+        print("2. Remove a task")
+        print("3. Update a task")
+        print("4. Search tasks by description")
+        print("5. Display all tasks")
+        print("6. Exit")
+        print()
+
+    # The run function runs the program.
+    def run(self):
+        self.display_menu()
+        # In this while loop while true, it outputs a string to the user asking to choose between the six options.
+        while True:
+            choice = input("Enter your choice (1-6): ")
+            print()
+            # If the user chooses option 1, the user is adding a task, and so they add it by entering information asked for that task.
+            if choice == "1":
+                description = input("Enter task description: ")
+                due_date = input("Enter task due date: ")
+                priority = input("Enter task priority: ")
+                task = Task(description, due_date, priority)
+                self.add_task(task)
+                print("Task added successfully.")
+            # If user chooses option 2, the user is removing a task, and so they input the task info to get it and remove it.
+            elif choice == "2":
+                description = input("Enter the task description you want to remove: ")
+                for task in self.tasks:
+                    if task.description == description:
+                        self.remove_task(task)
+                        print("Task removed successfully.")
+                        break
+                    else:
+                        # If info entered from a task is not found then an output to the user would appear as task not found.
+                        print("Task not found.")
+            # If user chooses option 3, the user wants to update a task, and so they add the new info to update a previous task.
+            elif choice == "3":
+                # Add code to update a task
+                task.description = description
+                task.due_date = due_date
+                task.priority = priority
+                pass
+            # If the user chooses option 4, the user is trying to find a task. The user would then enter (search) for the description to find the task.
+            elif choice == "4":
+                keyword = input("Enter search keyword: ")
+                self.search_tasks_by_description(keyword)
+                # option 5 is so that all tasks are displayed to the user.
+            elif choice == "5":
+                self.display_tasks()
+                # Option six would be the user wanting to exit the program.
+            elif choice == "6":
+                print("Exiting...")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+                print()
+
+    # Here is the empty tasks in which are filled in once the user added some.
+    def __init__(self):
+        self.tasks = []
+
+    # Each task added is appended to the empty list.
+    def add_task(self, task):
+        self.tasks.append(task)
+
+    # If the task needs to be removed it would then be removed.
+    def remove_task(self, task):
+        self.tasks.remove(task)
+
+    # Updating a task.
+    def update_task(self, task, new_description, new_due_date, new_priority):
+        task.description = new_description
+        task.due_date = new_due_date
+        task.priority = new_priority
+
+    # Added a sorting task that sorts tasks based on their due dates or priorities.
+    # The`key=lambda task: task.priority` argument is used to sort the tasks based on the `priority` attribute.
+    def display_tasks(self):
+        sorted_tasks = sorted(self.tasks, key=lambda task: task.due_date)
+        for task in sorted_tasks:
+            print(f"Description: {task.description}")
+            print(f"Due Date: {task.due_date}")
+            print(f"Priority: {task.priority}")
+
+    # Created a search functionality where `search_tasks_by_description` method takes a `keyword` parameter representing the search term. It uses a list comprehension to iterate over `self.tasks` and check if the `keyword` is present in the description of each task. If a task's description contains the `keyword`, it is added to the `matching_tasks` list.
+    def search_tasks_by_description(self, keyword):
+        matching_tasks = [task for task in self.tasks if keyword in task.description]
+        if matching_tasks:
+            print("Matching tasks:")
+        for task in matching_tasks:
+            print(f"Description: {task.description}")
+            print(f"Due Date: {task.due_date}")
+            print(f"Priority: {task.priority}")
+            print()
+        else:
+            print("No matching tasks found.")
+
+
+# Node class represents a node in the linked list
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+# LinkedList class represents the linked list
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def add_node(self, data):
+        new_node = Node(data)
+        if self.head is None:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+                current.next = new_node
+
+    def display(self):
+        current = self.head
+        while current:
+            print(current.data)
+            current = current.next
+
+
+# Create a LinkedList instance
+linked_list = LinkedList()
+
+# Add nodes to the linked list
+linked_list.add_node("Node 1")
+linked_list.add_node("Node 2")
+linked_list.add_node("Node 3")
+
+# Display the linked list
+linked_list.display()
+
+# Create a ToDoList instance
+todo_list = ToDoList()
+
+# Unit testing the program.
+# Run the ToDoList program
+todo_list.run()
+
+# Create a task and add it to the ToDoList
+task1 = Task("Complete assignment: Moms birthday gift", "12-14-2023", "High")
+todo_list.add_task(task1)
+
+task2 = Task("Complete assignment: Grocery list", "12-30-2023", "Low")
+todo_list.add_task(task2)
+
+# Display the tasks in the ToDoList
+todo_list.display_tasks()
+
+window.mainloop()
